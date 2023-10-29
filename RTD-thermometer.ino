@@ -57,24 +57,39 @@ void loop() {
     if (!digitalRead(BUTTON_A) || !digitalRead(BUTTON_B) || !digitalRead(BUTTON_C)) {
       state = 0;
       elapsed = 0;
+      // Only wake from sleep when button released, otherwise next state will be triggered in 10ms
       while (!digitalRead(BUTTON_A) || !digitalRead(BUTTON_B) || !digitalRead(BUTTON_C)) {
-        delay(10);
+        delay(LOOP_DURATION);
       }
     }
   }
   else {
-    if(!digitalRead(BUTTON_B)){
+    if(!digitalRead(BUTTON_B) && state == 2){ // only stop recording where one was started
       state = 1;
       elapsed = 0;
+      while (!digitalRead(BUTTON_B)) {
+        delay(LOOP_DURATION);
+      }
+      Serial.print("STOP RECORDING:\t");
+      Serial.println(millis());
     } 
-    else if(!digitalRead(BUTTON_C)){
+    else if(!digitalRead(BUTTON_C) && state != 2){ // do not restart recording when one is already running
       state = 2;
       elapsed = 0;
+      while (!digitalRead(BUTTON_C)){
+        delay(LOOP_DURATION);
+      }
+      Serial.print("BEGIN RECORDING:\t");
+      Serial.println(millis());
     }
     else { // state transition logic
       if (elapsed > SLEEP_DURATION){
           state -= 1;
           elapsed = 0;
+          if (state == 1) {
+            Serial.print("STOP RECORDING:\t");
+            Serial.println(millis());
+          }
       }
       else {
         elapsed+=LOOP_DURATION; // avoid overflowing elapsed! only increment if < SLEEP_DURATION
@@ -83,17 +98,16 @@ void loop() {
   }
   display.clearDisplay();
   display.setCursor(0,0);
-  // TODO make sure transitions only happen once! while button is held multiple loops occur where the button is depressed.
-  if(state == -1){ // should deactivate USB to save power. Assume filestream is closed or close if open for some reason
+  if(state == -1){ // should deactivate USB to save power.
     display.display();
     return;
   }
-  else if(state == 0){ // if state != 1, close filestream
+  else if(state == 0){
     display.println("THERMOMETER READY.");
     display.println("");
     display.println("");
   }
-  else if(state == 1){ // if state != 1, close filestream
+  else if(state == 1){
     display.println("RECORDING STOPPED.");
     display.println("");
     display.println("");
@@ -103,6 +117,7 @@ void loop() {
     display.println("TEMP:");
     display.println("");
     // should activate USB if not alr activated
+    // filestream should close in the same cycle like cat! otherwise holding a button may interrupt an open filestream upon next loop (b/c it uses delay())
   }
 
   display.println("<-- STOP  RECORDING");
