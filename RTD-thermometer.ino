@@ -21,25 +21,35 @@ void setup() {
   delay(250); // wait for the OLED to power up
   display.begin(0x3C, true); // Address 0x3C default
 
-  // Show image buffer on the display hardware.
-  // Since the buffer is intialized with an Adafruit splashscreen
-  // internally, this will display the splashscreen.
+  // Set display color and orientation
+  display.setTextColor(SH110X_WHITE);
+  display.setRotation(1);
+
+  // MagGenix Splash
+  display.clearDisplay();
+  display.setTextSize(3);
+  display.print("MAG");
+  display.setTextSize(2);
+  display.println("GENIX");
+  display.drawLine(56, 16, 111, 16, SH110X_WHITE);
+  display.println("");
+  display.setTextSize(1);
+  display.println("SREENIVAS EADARA");
+  display.println("FW 0.0.0 2023");
+   
   display.display();
   delay(1000);
+
+  // Reset text size
+  display.setTextSize(1);
 
   // Clear the buffer.
   display.clearDisplay();
   display.display();
 
-  display.setRotation(1);
-
   pinMode(BUTTON_A, INPUT_PULLUP);
   pinMode(BUTTON_B, INPUT_PULLUP);
   pinMode(BUTTON_C, INPUT_PULLUP);
-
-  // text display tests
-  display.setTextSize(1);
-  display.setTextColor(SH110X_WHITE);
 
   thermo.begin(MAX31865_3WIRE);  // set to 2WIRE or 4WIRE as necessary
   
