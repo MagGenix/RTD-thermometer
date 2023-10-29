@@ -52,15 +52,18 @@ const int LOOP_DURATION = 10;
 const long SLEEP_DURATION = 10000;
 
 void loop() {
-  // TODO add sleep if inactive for > 1 min to prevent OLED burn-in! Needs USB to be deactivated (prevent battery consumption) and display written blank, then MCU sleep. PCINT on button A to wake.
+  // TODO USB deactivate on sleep, reactivate on wake
   if (state == -1) {
     if (!digitalRead(BUTTON_A) || !digitalRead(BUTTON_B) || !digitalRead(BUTTON_C)) {
       state = 0;
       elapsed = 0;
+      while (!digitalRead(BUTTON_A) || !digitalRead(BUTTON_B) || !digitalRead(BUTTON_C)) {
+        delay(10);
+      }
     }
   }
   else {
-    else if(!digitalRead(BUTTON_B)){
+    if(!digitalRead(BUTTON_B)){
       state = 1;
       elapsed = 0;
     } 
@@ -69,11 +72,11 @@ void loop() {
       elapsed = 0;
     }
     else { // state transition logic
-      if (elapsed > SLEEP_DURATION && state > -1){
+      if (elapsed > SLEEP_DURATION){
           state -= 1;
           elapsed = 0;
       }
-      else if (state > -1) {
+      else {
         elapsed+=LOOP_DURATION; // avoid overflowing elapsed! only increment if < SLEEP_DURATION
       }
     }
