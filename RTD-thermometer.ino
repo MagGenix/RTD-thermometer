@@ -79,6 +79,7 @@ void loop() {
     if (!digitalRead(BUTTON_A) || !digitalRead(BUTTON_B) || !digitalRead(BUTTON_C)) {
       state = 0;
       elapsed = 0;
+      digitalWrite(PIN_5V_EN, PIN_5V_EN_STATE);
       // Only wake from sleep when button released, otherwise next state will be triggered in 10ms
       while (!digitalRead(BUTTON_A) || !digitalRead(BUTTON_B) || !digitalRead(BUTTON_C)) {
         delay(LOOP_DURATION);
@@ -122,6 +123,7 @@ void loop() {
   display.setCursor(0,0);
   if(state == -1){ // should deactivate USB to save power.
     display.display();
+    digitalWrite(PIN_5V_EN, !PIN_5V_EN_STATE);
     return;
   }
   else if(state == 0){
