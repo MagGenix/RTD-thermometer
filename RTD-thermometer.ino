@@ -123,6 +123,7 @@ void loop() {
   display.setCursor(0,0);
   if(state == -1){ // should deactivate USB to save power.
     display.display();
+    fatfs.end();
     digitalWrite(PIN_5V_EN, !PIN_5V_EN_STATE);
     return;
   }
