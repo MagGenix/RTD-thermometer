@@ -74,7 +74,7 @@ const int LOOP_DURATION = 10;
 const long SLEEP_DURATION = 10000;
 
 void loop() {
-  // TODO USB deactivate on sleep, reactivate on wake
+  // USB reactivate on wake
   if (state == -1) {
     if (!digitalRead(BUTTON_A) || !digitalRead(BUTTON_B) || !digitalRead(BUTTON_C)) {
       state = 0;
@@ -139,15 +139,14 @@ void loop() {
     f_log.close();
   }
   else if(state == 2){
+    unsigned long time = millis() + 10;
     float temp = getTemp();
-    writeTemp(temp);
-    Serial.printf("%i\t%f\n", millis(), temp);
+    writeTemp(temp, time);
+    Serial.printf("%i\t%f\n", time, temp);
     display.println("STARTED RECORDING.");
     display.print("TEMP: ");
     display.println(temp);
     display.println("");
-    // should activate USB if not alr activated
-    // filestream should close in the same cycle like cat! otherwise holding a button may interrupt an open filestream upon next loop (b/c it uses delay())
   }
 
   display.println("<-- STOP  RECORDING");
@@ -163,11 +162,10 @@ void loop() {
 }
 
 float getTemp() {
-  uint16_t rtd = thermo.readRTD();
   return thermo.temperature(RNOMINAL, RREF);
 }
 
-void writeTemp(float temp) {
+void writeTemp(float temp, unsigned long time) {
   if (!is_mounted) {
     return;
   }
@@ -183,7 +181,7 @@ void writeTemp(float temp) {
   if (!f_log) {
     f_log = fatfs.open(csvName, O_WRITE | O_APPEND | O_CREAT);
   } else {
-    f_log.printf("%i\t%f\n", millis(), temp);
+    f_log.printf("%i\t%f\n", time, temp);
   }
   
   //Serial.flush();
