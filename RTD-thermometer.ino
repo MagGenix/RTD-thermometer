@@ -139,7 +139,7 @@ void loop() {
     f_log.close();
   }
   else if(state == 2){
-    unsigned long time = millis() + 10;
+    unsigned long time = millis() + 75;
     float temp = getTemp();
     writeTemp(temp, time);
     Serial.printf("%i\t%f\n", time, temp);
