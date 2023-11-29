@@ -8,10 +8,10 @@ Adafruit_SH1107 display = Adafruit_SH1107(64, 128, &Wire);
 
 // OLED FeatherWing buttons map to different pins depending on board:
 #define BUTTON_A  9
-#define BUTTON_B  8 // used to be 6 SREENI
-#define BUTTON_C  7 // used to be 5 SREENI
+#define BUTTON_B  6 // used to be 6 SREENI, 8 on other boards
+#define BUTTON_C  5 // used to be 5 SREENI, 7 on other boards
 
-Adafruit_MAX31865 thermo = Adafruit_MAX31865(25); // SREENI hardware SPI0 (25, 189, 19, 20) on Feather RP2040. Pass in CS pin only
+Adafruit_MAX31865 thermo = Adafruit_MAX31865(4); // SREENI hardware SPI0 (25, 189, 19, 20) on Feather RP2040. Pass in CS pin only
 #define RREF      430.0
 #define RNOMINAL  100.0
 
@@ -31,7 +31,7 @@ void setup() {
   display.print("MAG");
   display.setTextSize(2);
   display.println("GENIX");
-  display.drawLine(56, 16, 111, 16, SH110X_WHITE);
+  display.drawLine(54, 16, 111, 16, SH110X_WHITE);
   display.println("");
   display.setTextSize(1);
   display.println("SREENIVAS EADARA");
@@ -123,8 +123,10 @@ void loop() {
     display.println("");
   }
   else if(state == 2){
+    float temp = getTemp();
     display.println("STARTED RECORDING.");
-    display.println("TEMP:");
+    display.print("TEMP: ");
+    display.println(temp);
     display.println("");
     // should activate USB if not alr activated
     // filestream should close in the same cycle like cat! otherwise holding a button may interrupt an open filestream upon next loop (b/c it uses delay())
