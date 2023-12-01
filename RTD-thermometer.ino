@@ -46,7 +46,7 @@ void setup() {
   display.println("");
   display.setTextSize(1);
   display.println("SREENIVAS EADARA");
-  display.println("FW 1.0.0 2023");
+  display.println("FW 1.0.1 2023");
    
   display.display();
   delay(1000);
@@ -128,7 +128,7 @@ void loop() {
   display.setCursor(0,0);
   if(state == -1){ // should deactivate USB to save power.
     display.display();
-    fatfs.end();
+    //fatfs.end();
     digitalWrite(PIN_5V_EN, !PIN_5V_EN_STATE);
     return;
   }
@@ -239,7 +239,7 @@ void tuh_msc_mount_cb(uint8_t dev_addr) {
   is_mounted = fatfs.begin(&msc_block_dev);
 
   if (is_mounted) {
-    fatfs.ls(&Serial, LS_SIZE);
+    Serial.println("Mounted USB Device");
   } else {
     Serial.println("Failed to mount mass storage device. Make sure it is formatted as FAT");
   }
