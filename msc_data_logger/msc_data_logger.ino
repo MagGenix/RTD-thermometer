@@ -55,7 +55,7 @@ Adafruit_USBH_MSC_BlockDevice msc_block_dev;
 // file system object from SdFat
 FatVolume fatfs;
 File32 f_log;
-
+ 
 // if file system is successfully mounted on usb block device
 volatile bool is_mounted = false;
 

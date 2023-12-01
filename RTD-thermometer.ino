@@ -46,7 +46,7 @@ void setup() {
   display.println("");
   display.setTextSize(1);
   display.println("SREENIVAS EADARA");
-  display.println("FW 0.0.0 2023");
+  display.println("FW 1.0.0 2023");
    
   display.display();
   delay(1000);
@@ -72,6 +72,7 @@ volatile bool is_mounted = false;
 
 const int LOOP_DURATION = 10;
 const long SLEEP_DURATION = 10000;
+char CSVNAME[] = "TEMPERATURE_DATA.tsv";
 
 void loop() {
   // USB reactivate on wake
@@ -104,6 +105,10 @@ void loop() {
       }
       Serial.print("BEGIN RECORDING:\t");
       Serial.println(millis());
+      if (is_mounted && !f_log){
+        f_log = fatfs.open(CSVNAME, O_WRITE | O_APPEND | O_CREAT);
+        Serial.flush();
+      }
     }
     else { // state transition logic
       if (elapsed > SLEEP_DURATION){
@@ -146,7 +151,11 @@ void loop() {
     display.println("STARTED RECORDING.");
     display.print("TEMP: ");
     display.println(temp);
-    display.println("");
+    if (is_mounted && f_log) {
+      display.println("USB LOGGING ACTIVE.");
+    } else {
+      display.println("USB LOGGING INACTIVE.");
+    }
   }
 
   display.println("<-- STOP  RECORDING");
@@ -166,25 +175,12 @@ float getTemp() {
 }
 
 void writeTemp(float temp, unsigned long time) {
-  if (!is_mounted) {
+  if (!is_mounted || !f_log) {
     return;
   }
-  String csvName = "TEMPERATURE_DATA.tsv";
-  /*String newcsvName = "ERR.csv";
-  for (int i = 1; i <= 256; i++) {
-    newcsvName = i + csvName;
-    if (!fatfs.exists(newcsvName)) {
-      break;
-    }
-  }*/
+
   digitalWrite(LED_BUILTIN, HIGH);
-  if (!f_log) {
-    f_log = fatfs.open(csvName, O_WRITE | O_APPEND | O_CREAT);
-  } else {
-    f_log.printf("%i\t%f\n", time, temp);
-  }
-  
-  //Serial.flush();
+  f_log.printf("%i\t%f\n", time, temp);
 }
 
 
