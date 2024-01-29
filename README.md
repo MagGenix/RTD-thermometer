@@ -27,7 +27,7 @@ Using these parts just made it easier to finish the project (as opposed to spend
 
 Assembly involved wiring the MAX31865 to the default SPI pins on the RP2040 USB Host and stacking the OLED on the microcontroller through the perma-proto board. Note that depending on the PT100 probe used, traces may need to be cut and/or jumpers may need to be soldered on the MAX31865 breakout board. Please see Adafruit's instructions for this.
 
-I designed a case to fit the device I built. If it helps, files (STEP and 3MF) are supplied with this repository.
+I designed a case to fit the device I built. If it helps, files (STEP and 3MF) are supplied with this repository. I powered the device using a LiPo battery from Adafruit so it could be used for a couple hours away from a charger (i.e. during experiments).
 
 ## Code
 This code heavily uses examples and libraries from Adafruit's TinyUSB library and MAX31865 library (as well as the SH110X library for the display)!
