@@ -1,4 +1,9 @@
 /*********************************************************************
+ Written by Sreenivas Eadara for MagGenix, Inc.
+ See notice(s) from code examples or libraries used in this
+ software below.
+*********************************************************************/
+/*********************************************************************
  Adafruit invests time and resources providing this open source code,
  please support Adafruit and open-source hardware by purchasing
  products from Adafruit!
@@ -181,10 +186,7 @@ void loop() {
   display.display();
   
   delay(LOOP_DURATION);
-  yield();
-
-  // TODO add maximum to recording time and force state transition
-  
+  yield();  
 }
 
 float getTemp() {
