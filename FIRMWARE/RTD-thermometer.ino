@@ -1,3 +1,14 @@
+/*********************************************************************
+ Adafruit invests time and resources providing this open source code,
+ please support Adafruit and open-source hardware by purchasing
+ products from Adafruit!
+
+ MIT license, check LICENSE for more information
+ Copyright (c) 2019 Ha Thach for Adafruit Industries
+ All text above, and the splash screen below must be included in
+ any redistribution
+*********************************************************************/
+
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -31,6 +42,12 @@ void setup() {
 
   delay(250); // wait for the OLED to power up
   display.begin(0x3C, true); // Address 0x3C default
+  
+  // Show image buffer on the display hardware.
+  // Since the buffer is intialized with an Adafruit splashscreen
+  // internally, this will display the splashscreen.
+  display.display();
+  delay(1000);
 
   // Set display color and orientation
   display.setTextColor(SH110X_WHITE);
@@ -46,7 +63,7 @@ void setup() {
   display.println("");
   display.setTextSize(1);
   display.println("SREENIVAS EADARA");
-  display.println("FW 1.0.1 2023");
+  display.println("FW 1.0.2 2025");
    
   display.display();
   delay(1000);
