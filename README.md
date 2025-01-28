@@ -29,6 +29,8 @@ Assembly involved wiring the MAX31865 to the default SPI pins on the RP2040 USB 
 
 I designed a case to fit the device I built. If it helps, files (STEP and 3MF) are supplied with this repository. I powered the device using a LiPo battery from Adafruit so it could be used for a couple hours away from a charger (i.e. during experiments).
 
+**See the LICENSE file in the CASE folder, which accompanies the STEP and 3MF files for the case, for information on the hardware copyright and licensing**
+
 ## Code
 This code heavily uses examples and libraries from Adafruit's TinyUSB library and MAX31865 library (as well as the SH110X library for the display)!
 It implements a state machine on Core 1 that controls the display and measures temperatures using the MAX31865, while Core 2 and the PIOs are responsible for USB host.
