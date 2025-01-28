@@ -33,6 +33,8 @@ I designed a case to fit the device I built. If it helps, files (STEP and 3MF) a
 This code heavily uses examples and libraries from Adafruit's TinyUSB library and MAX31865 library (as well as the SH110X library for the display)!
 It implements a state machine on Core 1 that controls the display and measures temperatures using the MAX31865, while Core 2 and the PIOs are responsible for USB host.
 
+**See the LICENSE file in the FIRMWARE folder, which accompanies the code, for details on the code copyright and licensing.**
+
 ## Photos
 ![](RTD-Thermometer.jpg)
 ![](RTD-Thermometer-Demo.gif)
